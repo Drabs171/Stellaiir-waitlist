@@ -10,6 +10,7 @@ interface CounterData {
   referrals: number
   referralRate: number
   lastUpdated: string
+  status?: string
 }
 
 interface LiveCounterProps {
@@ -26,15 +27,22 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
   // Fetch counter data
   const fetchData = async () => {
     try {
+      console.log('📊 LiveCounter: Fetching data...')
       const response = await fetch('/api/waitlist/count')
+      console.log('📊 LiveCounter: Response status:', response.status)
       const result = await response.json()
+      console.log('📊 LiveCounter: Raw result:', result)
       
       if (response.ok) {
+        console.log('📊 LiveCounter: Setting data:', result.data)
         setData(result.data)
+      } else {
+        console.error('📊 LiveCounter: Response not OK:', response.status)
       }
     } catch (error) {
       console.error('Failed to fetch counter data:', error)
     } finally {
+      console.log('📊 LiveCounter: Setting loading to false')
       setLoading(false)
     }
   }
