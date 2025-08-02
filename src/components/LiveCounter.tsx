@@ -18,8 +18,6 @@ interface LiveCounterProps {
 }
 
 export default function LiveCounter({ className = '' }: LiveCounterProps) {
-  console.log('🚀 LIVECOUNTER: Component mounted/rendered!')
-  
   const [data, setData] = useState<CounterData | null>(null)
   const [loading, setLoading] = useState(true)
   const [displayCount, setDisplayCount] = useState(0)
@@ -29,36 +27,22 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
   // Fetch counter data
   const fetchData = async () => {
     try {
-      console.log('🔥 FRONTEND DEBUG: Fetching data from /api/waitlist/count')
       const response = await fetch('/api/waitlist/count')
-      console.log('🔥 FRONTEND DEBUG: Response status:', response.status)
-      console.log('🔥 FRONTEND DEBUG: Response ok:', response.ok)
-      
       const result = await response.json()
-      console.log('🔥 FRONTEND DEBUG: Full API response:', JSON.stringify(result, null, 2))
       
       if (response.ok && result.data) {
-        console.log('🔥 FRONTEND DEBUG: Success! Setting data to:', result.data)
         setData(result.data)
-        console.log('🔥 FRONTEND DEBUG: Data state should now be:', result.data)
-      } else {
-        console.error('🔥 FRONTEND DEBUG: API call failed or no data property')
-        console.error('🔥 FRONTEND DEBUG: Response status:', response.status)
-        console.error('🔥 FRONTEND DEBUG: Result object:', result)
       }
     } catch (error) {
-      console.error('🔥 FRONTEND DEBUG: Catch block - Network or parse error:', error)
+      console.error('Failed to fetch counter data:', error)
     } finally {
-      console.log('🔥 FRONTEND DEBUG: Finally block - setting loading to false')
       setLoading(false)
     }
   }
 
   // Animate counter
   useEffect(() => {
-    console.log('🔥 FRONTEND DEBUG: useEffect triggered with data:', data)
     if (data) {
-      console.log('🔥 FRONTEND DEBUG: Starting counter animation from', displayCount, 'to', data.total)
       const startCount = displayCount
       const endCount = data.total
       const duration = 2000 // 2 seconds
@@ -76,38 +60,30 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
         
         if (progress < 1) {
           requestAnimationFrame(animateCount)
-        } else {
-          console.log('🔥 FRONTEND DEBUG: Animation complete, final count:', currentCount)
         }
       }
       
       animateCount()
-    } else {
-      console.log('🔥 FRONTEND DEBUG: No data available for animation')
     }
   }, [data])
 
   // Intersection Observer for visibility detection
   useEffect(() => {
-    console.log('🚀 LIVECOUNTER: Setting up IntersectionObserver, ref.current:', !!ref.current)
     if (!ref.current) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        console.log('🚀 LIVECOUNTER: IntersectionObserver triggered, isIntersecting:', entry.isIntersecting)
         setIsVisible(entry.isIntersecting)
       },
       { threshold: 0.1 }
     )
 
     observer.observe(ref.current)
-    console.log('🚀 LIVECOUNTER: Observer set up successfully')
     return () => observer.disconnect()
   }, [])
 
-  // Fetch data immediately on mount (for debugging)
+  // Fetch data immediately on mount
   useEffect(() => {
-    console.log('🚀 LIVECOUNTER: Component mounted - fetching data immediately!')
     fetchData()
     
     // Poll for updates every 30 seconds
@@ -118,22 +94,7 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
     return () => clearInterval(interval)
   }, [])
 
-  // Original visibility-based effect (disabled for debugging)
-  useEffect(() => {
-    console.log('🚀 LIVECOUNTER: Visibility effect triggered, isVisible:', isVisible)
-    if (!isVisible) {
-      console.log('🚀 LIVECOUNTER: Component not visible, skipping data fetch')
-      return
-    }
-
-    console.log('🚀 LIVECOUNTER: Component is visible! Starting data fetch...')
-    // fetchData() // Disabled since we're fetching on mount
-  }, [isVisible])
-
-  console.log('🔥 FRONTEND DEBUG: Render called - loading:', loading, 'data:', data)
-
   if (loading) {
-    console.log('🔥 FRONTEND DEBUG: Showing loading spinner')
     return (
       <div className={`flex items-center justify-center ${className}`} role="status" aria-label="Loading waitlist counter">
         <motion.div
@@ -147,12 +108,7 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
     )
   }
 
-  if (!data) {
-    console.log('🔥 FRONTEND DEBUG: No data available, returning null')
-    return null
-  }
-
-  console.log('🔥 FRONTEND DEBUG: Rendering counter with data:', data)
+  if (!data) return null
 
   return (
     <motion.div
