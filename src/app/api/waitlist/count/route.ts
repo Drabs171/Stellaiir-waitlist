@@ -1,43 +1,22 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   console.log('🚀 Count API function started')
+  console.log('📊 DATABASE_URL exists:', !!process.env.DATABASE_URL)
+  console.log('📊 DATABASE_URL preview:', process.env.DATABASE_URL?.substring(0, 30) + '...')
   
   try {
-    console.log('📊 DATABASE_URL exists:', !!process.env.DATABASE_URL)
-    console.log('📊 DATABASE_URL preview:', process.env.DATABASE_URL?.substring(0, 30) + '...')
+    console.log('📊 About to import Prisma...')
+    const { prisma } = await import('@/lib/prisma')
+    console.log('📊 Prisma imported successfully!')
     
+    console.log('📊 About to call prisma.waitlist.count()')
     const totalCount = await prisma.waitlist.count()
     console.log('📊 Total count result:', totalCount)
     
-    // Get some additional stats
-    const todayStart = new Date()
-    todayStart.setHours(0, 0, 0, 0)
-    
-    const todayCount = await prisma.waitlist.count({
-      where: {
-        joinedAt: {
-          gte: todayStart
-        }
-      }
-    })
-
-    // Get referral stats
-    const totalReferrals = await prisma.waitlist.count({
-      where: {
-        referredBy: {
-          not: null
-        }
-      }
-    })
-
     return NextResponse.json({
       data: {
         total: totalCount,
-        today: todayCount,
-        referrals: totalReferrals,
-        referralRate: totalCount > 0 ? Math.round((totalReferrals / totalCount) * 100) : 0,
         lastUpdated: new Date().toISOString()
       }
     })
