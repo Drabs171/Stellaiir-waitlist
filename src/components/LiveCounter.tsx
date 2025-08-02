@@ -18,6 +18,8 @@ interface LiveCounterProps {
 }
 
 export default function LiveCounter({ className = '' }: LiveCounterProps) {
+  console.log('🚀 LIVECOUNTER: Component mounted/rendered!')
+  
   const [data, setData] = useState<CounterData | null>(null)
   const [loading, setLoading] = useState(true)
   const [displayCount, setDisplayCount] = useState(0)
@@ -87,23 +89,31 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
 
   // Intersection Observer for visibility detection
   useEffect(() => {
+    console.log('🚀 LIVECOUNTER: Setting up IntersectionObserver, ref.current:', !!ref.current)
     if (!ref.current) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        console.log('🚀 LIVECOUNTER: IntersectionObserver triggered, isIntersecting:', entry.isIntersecting)
         setIsVisible(entry.isIntersecting)
       },
       { threshold: 0.1 }
     )
 
     observer.observe(ref.current)
+    console.log('🚀 LIVECOUNTER: Observer set up successfully')
     return () => observer.disconnect()
   }, [])
 
   // Fetch data only when visible
   useEffect(() => {
-    if (!isVisible) return
+    console.log('🚀 LIVECOUNTER: Visibility effect triggered, isVisible:', isVisible)
+    if (!isVisible) {
+      console.log('🚀 LIVECOUNTER: Component not visible, skipping data fetch')
+      return
+    }
 
+    console.log('🚀 LIVECOUNTER: Component is visible! Starting data fetch...')
     fetchData()
     
     // Poll for updates every 30 seconds only when visible
