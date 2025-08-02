@@ -4,14 +4,27 @@ import { render } from '@react-email/render'
 // Initialize Resend with fallback for build time
 const createResendClient = () => {
   const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey || apiKey === 'undefined') {
+  if (!apiKey || apiKey === 'undefined' || apiKey === 'dummy_key_for_build') {
     console.warn('RESEND_API_KEY not configured. Email sending will be disabled.')
     return null
   }
-  return new Resend(apiKey)
+  try {
+    return new Resend(apiKey)
+  } catch (error) {
+    console.warn('Failed to initialize Resend client:', error)
+    return null
+  }
 }
 
-const resend = createResendClient()
+// Lazy initialize to avoid build-time issues
+let resend: ReturnType<typeof createResendClient> | undefined
+
+const getResendClient = () => {
+  if (resend === undefined) {
+    resend = createResendClient()
+  }
+  return resend
+}
 
 export interface EmailOptions {
   to: string | string[]
@@ -51,7 +64,8 @@ class EmailService {
   async sendEmail({ to, subject, react, from }: EmailOptions) {
     try {
       // Check if Resend is configured
-      if (!resend) {
+      const resendClient = getResendClient()
+      if (!resendClient) {
         console.warn('Email service not configured. Skipping email send.')
         return { success: true, data: { id: 'demo-mode', message: 'Email service not configured' } }
       }
@@ -60,7 +74,7 @@ class EmailService {
       const html = await render(react)
       
       // Send email using Resend
-      const { data, error } = await resend.emails.send({
+      const { data, error } = await resendClient.emails.send({
         from: from || this.defaultFrom,
         to: Array.isArray(to) ? to : [to],
         subject,
