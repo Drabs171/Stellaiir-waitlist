@@ -43,12 +43,13 @@ export async function GET() {
     })
   } catch (error) {
     console.error('❌ Waitlist count API error:', error)
-    console.error('❌ Error name:', error?.name)
-    console.error('❌ Error message:', error?.message)
-    console.error('❌ Error stack:', error?.stack)
+    const err = error as Error
+    console.error('❌ Error name:', err?.name)
+    console.error('❌ Error message:', err?.message)
+    console.error('❌ Error stack:', err?.stack)
     
     return NextResponse.json(
-      { error: 'Failed to fetch waitlist count', details: error?.message },
+      { error: 'Failed to fetch waitlist count', details: err?.message },
       { status: 500 }
     )
   }
