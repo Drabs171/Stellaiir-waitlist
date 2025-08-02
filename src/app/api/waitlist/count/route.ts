@@ -2,61 +2,53 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 export async function GET() {
+  console.log('🚀 Count API function started')
+  
   try {
-    console.log('🚀 Count API function started')
-    console.log('🚀 Environment check:', {
-      nodeEnv: process.env.NODE_ENV,
-      hasDB: !!process.env.DATABASE_URL,
-      dbPreview: process.env.DATABASE_URL?.substring(0, 20)
+    console.log('📊 DATABASE_URL exists:', !!process.env.DATABASE_URL)
+    console.log('📊 DATABASE_URL preview:', process.env.DATABASE_URL?.substring(0, 30) + '...')
+    
+    const totalCount = await prisma.waitlist.count()
+    console.log('📊 Total count result:', totalCount)
+    
+    // Get some additional stats
+    const todayStart = new Date()
+    todayStart.setHours(0, 0, 0, 0)
+    
+    const todayCount = await prisma.waitlist.count({
+      where: {
+        joinedAt: {
+          gte: todayStart
+        }
+      }
     })
 
-    // Get current date for today's signups
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    const tomorrow = new Date(today)
-    tomorrow.setDate(tomorrow.getDate() + 1)
-
-    // Fetch all required data
-    const [
-      totalCount,
-      todayCount,
-      totalReferrals,
-    ] = await Promise.all([
-      prisma.waitlist.count(),
-      prisma.waitlist.count({
-        where: {
-          joinedAt: {
-            gte: today,
-            lt: tomorrow
-          }
+    // Get referral stats
+    const totalReferrals = await prisma.waitlist.count({
+      where: {
+        referredBy: {
+          not: null
         }
-      }),
-      prisma.waitlist.count({
-        where: {
-          referredBy: {
-            not: null
-          }
-        }
-      })
-    ])
+      }
+    })
 
-    // Calculate referral rate
-    const referralRate = totalCount > 0 ? Math.round((totalReferrals / totalCount) * 100) : 0
-
-    const data = {
-      total: totalCount,
-      today: todayCount,
-      referrals: totalReferrals,
-      referralRate: referralRate,
-      lastUpdated: new Date().toISOString()
-    }
-
-    return NextResponse.json({ data })
-
+    return NextResponse.json({
+      data: {
+        total: totalCount,
+        today: todayCount,
+        referrals: totalReferrals,
+        referralRate: totalCount > 0 ? Math.round((totalReferrals / totalCount) * 100) : 0,
+        lastUpdated: new Date().toISOString()
+      }
+    })
   } catch (error) {
-    console.error('❌ Count API error:', error)
+    console.error('❌ Waitlist count API error:', error)
+    console.error('❌ Error name:', error?.name)
+    console.error('❌ Error message:', error?.message)
+    console.error('❌ Error stack:', error?.stack)
+    
     return NextResponse.json(
-      { error: 'Failed to fetch waitlist count' },
+      { error: 'Failed to fetch waitlist count', details: error?.message },
       { status: 500 }
     )
   }
