@@ -105,7 +105,20 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
     return () => observer.disconnect()
   }, [])
 
-  // Fetch data only when visible
+  // Fetch data immediately on mount (for debugging)
+  useEffect(() => {
+    console.log('🚀 LIVECOUNTER: Component mounted - fetching data immediately!')
+    fetchData()
+    
+    // Poll for updates every 30 seconds
+    const interval = setInterval(() => {
+      fetchData()
+    }, 30000)
+    
+    return () => clearInterval(interval)
+  }, [])
+
+  // Original visibility-based effect (disabled for debugging)
   useEffect(() => {
     console.log('🚀 LIVECOUNTER: Visibility effect triggered, isVisible:', isVisible)
     if (!isVisible) {
@@ -114,16 +127,7 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
     }
 
     console.log('🚀 LIVECOUNTER: Component is visible! Starting data fetch...')
-    fetchData()
-    
-    // Poll for updates every 30 seconds only when visible
-    const interval = setInterval(() => {
-      if (isVisible) {
-        fetchData()
-      }
-    }, 30000)
-    
-    return () => clearInterval(interval)
+    // fetchData() // Disabled since we're fetching on mount
   }, [isVisible])
 
   console.log('🔥 FRONTEND DEBUG: Render called - loading:', loading, 'data:', data)
