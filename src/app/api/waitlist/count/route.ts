@@ -1,34 +1,31 @@
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  console.log('🚀 Count API function started')
+  console.log('🚀 BASIC COUNT API - NO PRISMA')
+  console.log('📊 Environment check - NODE_ENV:', process.env.NODE_ENV)
   console.log('📊 DATABASE_URL exists:', !!process.env.DATABASE_URL)
-  console.log('📊 DATABASE_URL preview:', process.env.DATABASE_URL?.substring(0, 30) + '...')
   
   try {
-    console.log('📊 About to import Prisma...')
-    const { prisma } = await import('@/lib/prisma')
-    console.log('📊 Prisma imported successfully!')
+    // Return fake data without touching Prisma at all
+    const fakeData = {
+      total: 0,
+      today: 0,
+      referrals: 0,
+      referralRate: 0,
+      lastUpdated: new Date().toISOString(),
+      message: "Database temporarily unavailable - showing placeholder data"
+    }
     
-    console.log('📊 About to call prisma.waitlist.count()')
-    const totalCount = await prisma.waitlist.count()
-    console.log('📊 Total count result:', totalCount)
+    console.log('✅ Returning fake data successfully')
     
     return NextResponse.json({
-      data: {
-        total: totalCount,
-        lastUpdated: new Date().toISOString()
-      }
+      data: fakeData
     })
   } catch (error) {
-    console.error('❌ Waitlist count API error:', error)
-    const err = error as Error
-    console.error('❌ Error name:', err?.name)
-    console.error('❌ Error message:', err?.message)
-    console.error('❌ Error stack:', err?.stack)
+    console.error('❌ Even basic API failed:', error)
     
     return NextResponse.json(
-      { error: 'Failed to fetch waitlist count', details: err?.message },
+      { error: 'Basic API error', details: String(error) },
       { status: 500 }
     )
   }
