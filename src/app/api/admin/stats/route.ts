@@ -123,6 +123,9 @@ export async function GET(request: NextRequest) {
 }
 
 async function getSignupTrend(days: number) {
+  const waitlist = await getPrismaWaitlist()
+  if (!waitlist) return []
+  
   const now = new Date()
   const trend = []
 
@@ -131,7 +134,7 @@ async function getSignupTrend(days: number) {
     const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate())
     const endOfDay = new Date(startOfDay.getTime() + (24 * 60 * 60 * 1000))
 
-    const count = await prisma.waitlist.count({
+    const count = await waitlist.count({
       where: {
         joinedAt: {
           gte: startOfDay,
@@ -150,22 +153,32 @@ async function getSignupTrend(days: number) {
 }
 
 async function getReferralStats() {
+  const waitlist = await getPrismaWaitlist()
+  if (!waitlist) {
+    return {
+      totalReferrals: 0,
+      usersWithReferrals: 0,
+      conversionRate: '0%',
+      avgReferralsPerUser: '0'
+    }
+  }
+  
   const [
     totalReferrals,
     usersWithReferrals,
     avgReferralsPerUser
   ] = await Promise.all([
-    prisma.waitlist.count({
+    waitlist.count({
       where: { referredBy: { not: null } }
     }),
-    prisma.waitlist.count({
+    waitlist.count({
       where: {
         referrals: {
           some: {}
         }
       }
     }),
-    prisma.waitlist.aggregate({
+    waitlist.aggregate({
       _avg: {
         position: true
       },
@@ -178,7 +191,7 @@ async function getReferralStats() {
   ])
 
   // Get referral conversion rate (users who referred others vs total users)
-  const totalUsers = await prisma.waitlist.count()
+  const totalUsers = await waitlist.count()
   const conversionRate = totalUsers > 0 ? ((usersWithReferrals / totalUsers) * 100).toFixed(2) + '%' : '0%'
 
   return {
