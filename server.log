@@ -1,0 +1,319 @@
+
+> genome-ai-waitlist@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.4.5 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://10.0.0.215:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ optimizeCss
+     · optimizePackageImports
+
+ ✓ Starting...
+ ✓ Compiled middleware in 80ms
+ ✓ Ready in 880ms
+ ⚠ Webpack is configured while Turbopack is not, which may cause problems.
+ ⚠ See instructions if you need to configure Turbopack:
+  https://nextjs.org/docs/app/api-reference/next-config-js/turbopack
+
+ ○ Compiling /api/config/status ...
+ ✓ Compiled /api/config/status in 556ms
+ GET /api/config/status 200 in 643ms
+ ✓ Compiled /api/waitlist/count in 66ms
+ GET /api/waitlist/count 200 in 1603ms
+ GET /api/waitlist/count 200 in 348ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1693ms
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ GET / 200 in 1989ms
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ GET / 200 in 157ms
+ ✓ Compiled /_not-found/page in 324ms
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ GET /_next/static/css/non-critical.css 404 in 396ms
+ GET /not-found 404 in 134ms
+ GET /fonts/geist-sans.woff2 404 in 448ms
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ GET /api/waitlist/count 200 in 352ms
+ GET /favicon.ico 200 in 343ms
+ GET /_next/static/css/critical.css 404 in 53ms
+ GET /api/waitlist/count 200 in 1052ms
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ GET / 200 in 177ms
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ GET /_next/static/css/non-critical.css 404 in 54ms
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ GET /favicon.ico 200 in 59ms
+ GET /not-found 404 in 59ms
+ GET / 200 in 60ms
+ ⚠ ./middleware.ts:2:1
+Ecmascript file had an error
+[0m [90m 1 |[39m [36mimport[39m { [33mNextRequest[39m[33m,[39m [33mNextResponse[39m } [36mfrom[39m [32m'next/server'[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { randomBytes } [36mfrom[39m [32m'crypto'[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [90m// Rate limiting storage (in production, use Redis or similar)[39m
+ [90m 5 |[39m [36mconst[39m rateLimitMap [33m=[39m [36mnew[39m [33mMap[39m[33m<[39m[33mstring[39m[33m,[39m { count[33m:[39m number[33m;[39m resetTime[33m:[39m number }[33m>[39m()[0m
+
+A Node.js module is loaded ('crypto' at line 2) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+
+ GET /api/waitlist/count 200 in 402ms
+ GET /api/waitlist/count 200 in 412ms
+ GET /api/waitlist/count 200 in 326ms
+ GET /api/waitlist/count 200 in 331ms
+ GET /api/waitlist/count 200 in 325ms
+ ✓ Compiled middleware in 13ms
+ ✓ Compiled in 21ms
+ ✓ Compiled middleware in 2ms
+ ✓ Compiled in 8ms
+ ✓ Compiled middleware in 2ms
+ ✓ Compiled in 8ms
+ GET /api/waitlist/count 200 in 348ms
+ ✓ Compiled middleware in 3ms
+ ✓ Compiled in 83ms
+ GET / 200 in 139ms
+ GET /api/waitlist/count 200 in 340ms
+ GET / 200 in 134ms
+ GET /api/config/status 200 in 16ms
+ GET /api/waitlist/count 200 in 350ms
+ GET / 200 in 160ms
+ GET /_next/static/css/non-critical.css 404 in 51ms
+ GET /_next/static/css/critical.css 404 in 170ms
+ GET /favicon.ico 200 in 175ms
+ GET / 200 in 175ms
+ GET /not-found 404 in 174ms
+ GET /api/waitlist/count 200 in 320ms
+ GET /api/waitlist/count 200 in 391ms
+ GET /api/waitlist/count 200 in 324ms
+ GET / 200 in 107ms
+ GET /api/waitlist/count 200 in 343ms
+ GET / 200 in 145ms
+ GET / 200 in 157ms
+ GET /api/waitlist/count 200 in 338ms
+ GET /api/waitlist/count 200 in 1220ms
+ GET /api/waitlist/count 200 in 341ms
+ GET /api/waitlist/count 200 in 346ms
+ GET / 200 in 159ms
+ GET /fonts/geist-sans.woff2 404 in 53ms
+ GET /_next/static/css/non-critical.css 404 in 50ms
+ GET / 200 in 225ms
+ GET /favicon.ico 200 in 224ms
+ GET /not-found 404 in 222ms
+ GET /_next/static/css/critical.css 404 in 224ms
+ GET /api/waitlist/count 200 in 399ms
+ GET /api/waitlist/count 200 in 1284ms
+ GET / 200 in 144ms
+ GET /_next/static/css/non-critical.css 404 in 41ms
+ GET /api/waitlist/count 200 in 289ms
+ GET /api/waitlist/count 200 in 301ms
+ GET / 200 in 165ms
+ GET /favicon.ico 200 in 165ms
+ GET /_next/static/css/critical.css 404 in 164ms
+ GET /not-found 404 in 163ms
+ ✓ Compiled /api/admin/auth in 70ms
+ DELETE /api/admin/auth 200 in 97ms
+ DELETE /api/admin/auth 200 in 15ms
+ ✓ Compiled /admin/login in 237ms
+ GET /admin/login 200 in 264ms
+ GET /admin/login 200 in 46ms
+ ✓ Compiled /api/admin/stats in 60ms
+Admin stats error: Error: Authentication required
+    at requireAuth (src/lib/auth.ts:87:10)
+    at async GET (src/app/api/admin/stats/route.ts:9:4)
+  85 |   const session = await getSession()
+  86 |   if (!session.isAuthenticated) {
+> 87 |     throw new Error('Authentication required')
+     |          ^
+  88 |   }
+  89 |   return session
+  90 | }
+ GET /api/admin/stats 401 in 164ms
+Admin stats error: Error: Authentication required
+    at requireAuth (src/lib/auth.ts:87:10)
+    at async GET (src/app/api/admin/stats/route.ts:9:4)
+  85 |   const session = await getSession()
+  86 |   if (!session.isAuthenticated) {
+> 87 |     throw new Error('Authentication required')
+     |          ^
+  88 |   }
+  89 |   return session
+  90 | }
+ GET /api/admin/stats 401 in 218ms
+ GET /api/waitlist/count 200 in 344ms
+ ✓ Compiled / in 12ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button className=... onClick={function onClick} children=...>
+                                ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3560924004'
+}
+ GET / 200 in 245ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button className=... onClick={function onClick} children=...>
+                                ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3560924004'
+}
+ GET / 200 in 130ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button className=... onClick={function onClick} children=...>
+                                ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3560924004'
+}
+ GET / 200 in 111ms
+ ✓ Compiled / in 9ms
+ GET / 200 in 300ms
+ ✓ Compiled /_not-found/page in 7ms
+ GET /fonts/geist-sans.woff2 404 in 49ms
+ GET /_next/static/css/non-critical.css 404 in 62ms
+ GET /favicon.ico 200 in 149ms
+ GET /_next/static/css/critical.css 404 in 148ms
+ GET / 200 in 152ms
+ GET /api/waitlist/count 200 in 337ms
+ ✓ Compiled / in 10ms
+ GET / 200 in 76ms
+ GET / 200 in 32ms
+ GET / 200 in 20ms
+ GET / 200 in 241ms
+ GET /api/waitlist/count 200 in 342ms
+ GET /api/waitlist/count 200 in 332ms
+ GET /api/waitlist/count 200 in 323ms
+ GET /api/waitlist/count 200 in 326ms
+ GET /api/waitlist/count 200 in 362ms
+ GET /api/waitlist/count 200 in 358ms
+ GET /api/waitlist/count 200 in 1294ms
+ GET /api/waitlist/count 200 in 356ms
+ GET /api/waitlist/count 200 in 353ms
+ GET /api/waitlist/count 200 in 358ms
+ GET /api/waitlist/count 200 in 1200ms
+[?25h

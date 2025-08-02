@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Waitlist {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  referralCode  String    @unique @map("referral_code")
+  referredBy    String?   @map("referred_by")
+  position      Int       // Will be calculated manually
+  joinedAt      DateTime  @default(now()) @map("joined_at")
+  metadata      String?   @default("{}")
+  
+  // Email tracking fields
+  emailSent        Boolean   @default(false) @map("email_sent")
+  lastEmailSent    DateTime? @map("last_email_sent")
+  emailFailures    Int       @default(0) @map("email_failures")
+  unsubscribed     Boolean   @default(false)
+  
+  // Self-referential relationship
+  referrer      Waitlist? @relation("Referrals", fields: [referredBy], references: [id])
+  referrals     Waitlist[] @relation("Referrals")
+  
+  // Email logs
+  emailLogs     EmailLog[]
+  
+  @@index([email])
+  @@index([referralCode])
+  @@index([referredBy])
+  @@index([position])
+  @@index([joinedAt])
+  @@index([emailSent])
+  @@index([unsubscribed])
+  @@map("waitlist")
+}
+
+model EmailLog {
+  id               String    @id @default(uuid())
+  recipientEmail   String    @map("recipient_email")
+  emailType        String    @map("email_type") // 'welcome', 'milestone', 'admin'
+  sentAt           DateTime  @default(now()) @map("sent_at")
+  success          Boolean
+  errorMessage     String?   @map("error_message")
+  waitlistId       String?   @map("waitlist_id")
+  
+  // Relations
+  waitlistEntry    Waitlist? @relation(fields: [waitlistId], references: [id])
+  
+  @@index([recipientEmail])
+  @@index([emailType])
+  @@index([sentAt])
+  @@index([success])
+  @@index([waitlistId])
+  @@map("email_log")
+}
+
+model MilestoneTracking {
+  id               String    @id @default(uuid())
+  milestone        Int       @unique // 1000, 2000, 3000, etc.
+  reachedAt        DateTime  @default(now()) @map("reached_at")
+  emailsSent       Int       @default(0) @map("emails_sent")
+  emailsFailed     Int       @default(0) @map("emails_failed")
+  processed        Boolean   @default(false)
+  
+  @@index([milestone])
+  @@index([reachedAt])
+  @@map("milestone_tracking")
+}
+
+model AdminNotificationLog {
+  id               String    @id @default(uuid())
+  notificationType String    @map("notification_type") // 'signups_100', 'milestone', etc.
+  triggerCount     Int       @map("trigger_count") // 100, 200, 1000, etc.
+  sentAt           DateTime  @default(now()) @map("sent_at")
+  recipients       String    // JSON array of admin emails
+  success          Boolean
+  errorMessage     String?   @map("error_message")
+  
+  @@index([notificationType])
+  @@index([sentAt])
+  @@index([triggerCount])
+  @@map("admin_notification_log")
+}

@@ -1,0 +1,431 @@
+/* Critical CSS for above-the-fold content - Inline in HTML head */
+
+/* CSS Variables for consistency */
+:root {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --secondary: #22d3ee;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --card-bg: rgba(255, 255, 255, 0.02);
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Skip links for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--primary);
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 1000;
+  font-size: 14px;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Header styles */
+.header {
+  position: relative;
+  z-index: 10;
+  padding: 1rem;
+}
+
+.nav {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.logo-icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--primary);
+}
+
+.status-badge {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  background: linear-gradient(to right, rgba(99, 102, 241, 0.2), rgba(34, 211, 238, 0.2));
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Hero section styles */
+.hero {
+  position: relative;
+  z-index: 10;
+  padding: 3rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #d1d5db;
+  max-width: 64rem;
+  margin: 0 auto 3rem;
+  line-height: 1.6;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #6366f1, #8b5cf6, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Form styles */
+.waitlist-form {
+  max-width: 28rem;
+  margin: 0 auto 4rem;
+  padding: 0 1rem;
+}
+
+.form-container {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #9ca3af;
+}
+
+.form-button {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #22d3ee 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+}
+
+.form-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none!important;
+}
+
+/* Trust indicators */
+.trust-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin-top: 2rem;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trust-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Error and success messages */
+.message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+.message-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.message-success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.message-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* Privacy notice */
+.privacy-notice {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 1rem;
+}
+
+/* Responsive design */
+@media (min-width: 640px) {
+  .header {
+    padding: 2rem;
+  }
+  
+  .nav {
+    padding: 1rem 2rem;
+  }
+  
+  .hero {
+    padding: 5rem 1.5rem;
+  }
+  
+  .hero-title {
+    font-size: 3.75rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .trust-indicators {
+    gap: 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 4.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 6rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.875rem;
+  }
+}
+
+/* Loading states (no-JS fallback) */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .form-input {
+    border-width: 2px;
+  }
+  
+  .form-button {
+    border: 2px solid white;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Print styles */
+@media print {
+  .header,
+  .trust-indicators {
+    display: none;
+  }
+  
+  .hero {
+    min-height: auto;
+    padding: 2rem 0;
+  }
+  
+  .hero-title,
+  .hero-subtitle {
+    color: black !important;
+  }
+  
+  .form-container {
+    border: 2px solid black;
+    background: white;
+  }
+}
+
+/* Focus indicators for keyboard navigation */
+.focus-visible,
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* No-JS fallback classes */
+.no-js .js-only {
+  display: none !important;
+}
+
+/* Ensure waitlist form is always visible - override for critical forms */
+.waitlist-form,
+.js-only .waitlist-form,
+.no-js .js-only.waitlist-form {
+  display: block !important;
+  opacity: 1 !important;
+}
+
+/* Ensure form container and children are visible even if animations fail */
+.js-only.waitlist-form,
+.js-only.waitlist-form *,
+.js-only.waitlist-form form,
+.js-only.waitlist-form form *,
+div[style*="opacity:0"] .js-only.waitlist-form,
+div[style*="opacity:0"] .js-only.waitlist-form * {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Force main page elements to be visible if stuck at opacity 0 */
+main[style*="opacity:0"],
+main[style*="opacity:0"] .js-only.waitlist-form,
+main[style*="opacity:0"] .js-only.waitlist-form * {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+
+
+.no-js .no-js-hidden {
+  display: none !important;
+}
+
+.no-js .no-js-show {
+  display: block !important;
+}
+
+/* Animation fallbacks */
+.no-js .animated,
+.no-js [class*="animate"] {
+  animation: none !important;
+  transform: none !important;
+}
