@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { getPrismaWaitlist } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
   try {
@@ -79,8 +79,16 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit
 
     // Get data and total count
+    const waitlist = await getPrismaWaitlist()
+    if (!waitlist) {
+      return NextResponse.json(
+        { error: 'Database not available' },
+        { status: 503 }
+      )
+    }
+    
     const [signups, totalCount] = await Promise.all([
-      prisma.waitlist.findMany({
+      waitlist.findMany({
         where: whereClause,
         include: {
           referrer: {
@@ -101,7 +109,7 @@ export async function GET(request: NextRequest) {
         skip,
         take: limit
       }),
-      prisma.waitlist.count({
+      waitlist.count({
         where: whereClause
       })
     ])

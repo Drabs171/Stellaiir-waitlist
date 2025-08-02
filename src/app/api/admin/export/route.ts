@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { getPrismaWaitlist } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
   try {
@@ -32,7 +32,15 @@ export async function GET(request: NextRequest) {
     }
 
     // Get waitlist data
-    const waitlistData = await prisma.waitlist.findMany({
+    const waitlist = await getPrismaWaitlist()
+    if (!waitlist) {
+      return NextResponse.json(
+        { error: 'Database not available' },
+        { status: 503 }
+      )
+    }
+    
+    const waitlistData = await waitlist.findMany({
       where: whereClause,
       include: {
         referrer: {

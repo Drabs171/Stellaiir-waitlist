@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { getPrismaWaitlist } from '@/lib/prisma'
 import { checkRateLimit, getClientIP } from '@/lib/rate-limit'
 import { generateUniqueReferralCode, validateReferralCode } from '@/lib/referral'
 import { emailService, createReferralUrl } from '@/lib/email'

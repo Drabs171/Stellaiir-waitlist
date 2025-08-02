@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { getPrismaWaitlist } from '@/lib/prisma'
 import { emailTracker } from '@/lib/email-tracker'
 
 export async function GET(request: NextRequest) {
@@ -28,22 +28,29 @@ export async function GET(request: NextRequest) {
       activeSubscribers,
       unsubscribeCount
     ] = await Promise.all([
-      prisma.waitlist.count(),
-      prisma.waitlist.count({
-        where: { joinedAt: { gte: today } }
-      }),
-      prisma.waitlist.count({
-        where: { joinedAt: { gte: thisWeek } }
-      }),
-      prisma.waitlist.count({
-        where: { joinedAt: { gte: thisMonth } }
-      }),
+      (async () => {
+        const waitlist = await getPrismaWaitlist()
+        return waitlist ? waitlist.count() : 0
+      })(),
+      (async () => {
+        const waitlist = await getPrismaWaitlist()
+        return waitlist ? waitlist.count({ where: { joinedAt: { gte: today } } }) : 0
+      })(),
+      (async () => {
+        const waitlist = await getPrismaWaitlist()
+        return waitlist ? waitlist.count({ where: { joinedAt: { gte: thisWeek } } }) : 0
+      })(),
+      (async () => {
+        const waitlist = await getPrismaWaitlist()
+        return waitlist ? waitlist.count({ where: { joinedAt: { gte: thisMonth } } }) : 0
+      })(),
       emailTracker.getTopReferrers(10, days),
       emailTracker.getEmailStats(days),
       emailTracker.getActiveSubscribers(),
-      prisma.waitlist.count({
-        where: { unsubscribed: true }
-      })
+      (async () => {
+        const waitlist = await getPrismaWaitlist()
+        return waitlist ? waitlist.count({ where: { unsubscribed: true } }) : 0
+      })()
     ])
 
     // Get signup trend data for chart
