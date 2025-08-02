@@ -43,7 +43,7 @@ export default function AdminLoginPage() {
       if (response.ok) {
         router.push('/admin')
       }
-    } catch (error) {
+    } catch {
       // Not authenticated, stay on login page
     }
   }
@@ -83,7 +83,7 @@ export default function AdminLoginPage() {
           setRemainingAttempts(data.remainingAttempts)
         }
       }
-    } catch (error) {
+    } catch {
       setError('Network error. Please try again.')
     } finally {
       setIsLoading(false)

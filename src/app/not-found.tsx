@@ -48,7 +48,7 @@ function DNA404Animation() {
           animate={{ opacity: isVisible ? 1 : 0 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          {dnaStrands.map((strand, index) => (
+          {dnaStrands.map((strand) => (
             <motion.div
               key={strand.id}
               className="absolute w-4 h-4 rounded-full bg-gradient-to-r from-red-400 to-pink-500"

@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     console.log('✅ Captcha verified successfully')
 
     // Remove captchaToken from validation data
-    const { captchaToken: _, ...validationData } = body
+    const { captchaToken: _captchaToken, ...validationData } = body
     const { email } = waitlistSchema.parse(validationData)
     
     console.log('✅ Email validated:', email)

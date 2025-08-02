@@ -2,8 +2,17 @@ import { NextResponse } from 'next/server'
 import { getPrismaWaitlist } from '@/lib/prisma'
 
 // Simple in-memory cache
+interface CountData {
+  total: number
+  today: number
+  referrals: number
+  referralRate: number
+  lastUpdated: string
+  status: string
+}
+
 interface CacheEntry {
-  data: any
+  data: CountData
   timestamp: number
 }
 
@@ -23,7 +32,7 @@ function getCachedData(key: string) {
   return entry.data
 }
 
-function setCachedData(key: string, data: any) {
+function setCachedData(key: string, data: CountData) {
   cache.set(key, {
     data,
     timestamp: Date.now()
