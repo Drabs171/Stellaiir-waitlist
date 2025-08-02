@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { emailService, createReferralUrl } from '@/lib/email'
 import { emailTracker } from '@/lib/email-tracker'
-import { prisma } from '@/lib/prisma'
+import { getPrismaWaitlist } from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,10 +24,18 @@ export async function POST(request: NextRequest) {
 
     let result
 
+    const waitlist = await getPrismaWaitlist()
+    if (!waitlist) {
+      return NextResponse.json(
+        { error: 'Database not available' },
+        { status: 503 }
+      )
+    }
+
     switch (emailType) {
       case 'welcome':
         // Find user data for welcome email
-        const user = await prisma.waitlist.findUnique({
+        const user = await waitlist.findUnique({
           where: { email: recipientEmail }
         })
 
@@ -59,8 +67,8 @@ export async function POST(request: NextRequest) {
 
       case 'milestone':
         // Send test milestone email
-        const totalUsers = await prisma.waitlist.count()
-        const testUser = await prisma.waitlist.findUnique({
+        const totalUsers = await waitlist.count()
+        const testUser = await waitlist.findUnique({
           where: { email: recipientEmail }
         })
 
@@ -90,7 +98,7 @@ export async function POST(request: NextRequest) {
         // Send test admin notification
         const recentSignups = await emailTracker.getRecentSignups(7)
         const topReferrers = await emailTracker.getTopReferrers(5)
-        const totalSignups = await prisma.waitlist.count()
+        const totalSignups = await waitlist.count()
 
         result = await emailService.sendAdminNotification([recipientEmail], {
           totalSignups,
