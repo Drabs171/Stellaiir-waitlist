@@ -57,7 +57,7 @@ export async function getPrismaWaitlist() {
 }
 
 // Legacy export for compatibility (but this is what was causing crashes)
-export const prisma = new Proxy({} as any, {
+export const prisma = new Proxy({} as Record<string, unknown>, {
   get(target, prop) {
     throw new Error(`Direct prisma access not allowed. Use getPrismaClient() instead. Attempted to access: ${String(prop)}`)
   }
