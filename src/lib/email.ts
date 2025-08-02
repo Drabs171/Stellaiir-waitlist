@@ -1,8 +1,17 @@
 import { Resend } from 'resend'
 import { render } from '@react-email/render'
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Initialize Resend with fallback for build time
+const createResendClient = () => {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey || apiKey === 'undefined') {
+    console.warn('RESEND_API_KEY not configured. Email sending will be disabled.')
+    return null
+  }
+  return new Resend(apiKey)
+}
+
+const resend = createResendClient()
 
 export interface EmailOptions {
   to: string | string[]
@@ -41,6 +50,12 @@ class EmailService {
 
   async sendEmail({ to, subject, react, from }: EmailOptions) {
     try {
+      // Check if Resend is configured
+      if (!resend) {
+        console.warn('Email service not configured. Skipping email send.')
+        return { success: true, data: { id: 'demo-mode', message: 'Email service not configured' } }
+      }
+
       // Convert React component to HTML
       const html = await render(react)
       
