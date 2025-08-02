@@ -72,11 +72,12 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-                      <img 
-            src="/logo.png" 
-            alt="Stellaiir Logo" 
-            className="h-8 w-auto"
-          />
+                      <motion.div
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          >
+            <Brain className="h-8 w-8 text-indigo-400" />
+          </motion.div>
           <span className="text-xl sm:text-2xl font-bold text-white">Stellaiir</span>
           </motion.div>
           <div className="flex items-center gap-3">
@@ -282,11 +283,7 @@ export default function Home() {
       <footer className="relative z-10 px-4 sm:px-6 py-8 sm:py-12 border-t border-white/10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <img 
-              src="/logo.png" 
-              alt="Stellaiir Logo" 
-              className="h-5 w-auto sm:h-6"
-            />
+            <Brain className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-400" />
             <span className="text-lg sm:text-xl font-bold text-white">Stellaiir</span>
           </div>
           <p className="text-gray-400 text-xs sm:text-sm px-4 sm:px-0">

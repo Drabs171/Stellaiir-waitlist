@@ -40,6 +40,11 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL('https://stellaiir.com'),
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
   alternates: {
     canonical: '/',
   },
