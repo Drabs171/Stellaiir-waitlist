@@ -1,0 +1,29 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient matching your app colors -->
+    <linearGradient id="dnaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Simple DNA helix design -->
+  <g fill="url(#dnaGradient)">
+    <!-- Left helix strand -->
+    <path d="M20 8 Q32 20 20 32 Q8 44 20 56" stroke="url(#dnaGradient)" stroke-width="3" fill="none"/>
+    <!-- Right helix strand -->
+    <path d="M44 8 Q32 20 44 32 Q56 44 44 56" stroke="url(#dnaGradient)" stroke-width="3" fill="none"/>
+    
+    <!-- DNA base pairs (horizontal lines) -->
+    <line x1="20" y1="12" x2="44" y2="12" stroke="url(#dnaGradient)" stroke-width="2"/>
+    <line x1="24" y1="20" x2="40" y2="20" stroke="url(#dnaGradient)" stroke-width="2"/>
+    <line x1="20" y1="32" x2="44" y2="32" stroke="url(#dnaGradient)" stroke-width="2"/>
+    <line x1="24" y1="44" x2="40" y2="44" stroke="url(#dnaGradient)" stroke-width="2"/>
+    <line x1="20" y1="52" x2="44" y2="52" stroke="url(#dnaGradient)" stroke-width="2"/>
+    
+    <!-- Small dots for tech/circuit feel -->
+    <circle cx="32" cy="8" r="2" fill="url(#dnaGradient)"/>
+    <circle cx="32" cy="56" r="2" fill="url(#dnaGradient)"/>
+  </g>
+</svg>
