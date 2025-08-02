@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPrismaWaitlist } from '@/lib/prisma'
+import { getPrismaClient } from '@/lib/prisma'
 import { checkRateLimit, getClientIP } from '@/lib/rate-limit'
 import { generateUniqueReferralCode, validateReferralCode } from '@/lib/referral'
 import { emailService, createReferralUrl } from '@/lib/email'
@@ -66,6 +66,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if email already exists
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     const existingEntry = await prisma.waitlist.findUnique({
       where: { email }
     })

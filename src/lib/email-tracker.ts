@@ -1,4 +1,4 @@
-import { prisma } from './prisma'
+import { getPrismaClient } from './prisma'
 
 export interface EmailTrackingData {
   recipientEmail: string
@@ -11,6 +11,11 @@ export interface EmailTrackingData {
 class EmailTracker {
   async logEmail(data: EmailTrackingData) {
     try {
+      const prisma = await getPrismaClient()
+      if (!prisma) {
+        throw new Error('Database connection not available')
+      }
+      
       const emailLog = await prisma.emailLog.create({
         data: {
           recipientEmail: data.recipientEmail,
@@ -48,6 +53,11 @@ class EmailTracker {
   }
 
   async getEmailStats(days = 7) {
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     const since = new Date()
     since.setDate(since.getDate() - days)
 
@@ -67,6 +77,11 @@ class EmailTracker {
   }
 
   async getFailedEmails(limit = 50) {
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     return await prisma.emailLog.findMany({
       where: {
         success: false
@@ -87,6 +102,11 @@ class EmailTracker {
   }
 
   async retryFailedEmails(emailIds: string[]) {
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     // Mark failed emails for retry by clearing the error message
     const retryEmails = await prisma.emailLog.findMany({
       where: {
@@ -103,6 +123,11 @@ class EmailTracker {
 
   async markUnsubscribed(email: string) {
     try {
+      const prisma = await getPrismaClient()
+      if (!prisma) {
+        throw new Error('Database connection not available')
+      }
+      
       const result = await prisma.waitlist.update({
         where: { email },
         data: { unsubscribed: true }
@@ -124,6 +149,11 @@ class EmailTracker {
   }
 
   async getActiveSubscribers() {
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     return await prisma.waitlist.count({
       where: {
         unsubscribed: false
@@ -139,6 +169,11 @@ class EmailTracker {
       return null
     }
 
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     // Check if we've already processed this milestone
     const existingMilestone = await prisma.milestoneTracking.findUnique({
       where: { milestone }
@@ -164,6 +199,11 @@ class EmailTracker {
   }
 
   async markMilestoneProcessed(milestone: number, emailsSent: number, emailsFailed: number) {
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     return await prisma.milestoneTracking.update({
       where: { milestone },
       data: {
@@ -182,6 +222,11 @@ class EmailTracker {
       return null
     }
 
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     // Check if we've already sent notification for this threshold
     const existingNotification = await prisma.adminNotificationLog.findFirst({
       where: {
@@ -204,6 +249,11 @@ class EmailTracker {
     success: boolean,
     errorMessage?: string
   ) {
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     return await prisma.adminNotificationLog.create({
       data: {
         notificationType,
@@ -219,6 +269,11 @@ class EmailTracker {
     const since = new Date()
     since.setDate(since.getDate() - days)
 
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     const topReferrers = await prisma.waitlist.findMany({
       where: {
         joinedAt: {
@@ -240,13 +295,18 @@ class EmailTracker {
       take: limit
     })
 
-    return topReferrers.map(user => ({
+    return topReferrers.map((user: { email: string; _count: { referrals: number } }) => ({
       email: user.email,
       referralCount: user._count.referrals
     }))
   }
 
   async getRecentSignups(days = 7) {
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     const since = new Date()
     since.setDate(since.getDate() - days)
 

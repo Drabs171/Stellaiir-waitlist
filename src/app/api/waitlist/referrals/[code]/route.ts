@@ -28,7 +28,7 @@ export async function GET(
         totalReferrals: stats.totalReferrals,
         userPosition: stats.userPosition,
         joinedAt: stats.joinedAt,
-        referrals: stats.referrals.map(referral => ({
+        referrals: stats.referrals.map((referral: { id: string; email: string; joinedAt: Date; position: number }) => ({
           id: referral.id,
           email: referral.email.replace(/(.{2}).*(@.*)/, '$1***$2'), // Mask email for privacy
           joinedAt: referral.joinedAt,

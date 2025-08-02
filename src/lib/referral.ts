@@ -1,4 +1,4 @@
-import { prisma } from './prisma'
+import { getPrismaClient } from './prisma'
 
 // Characters that are easy to read and type (excluding confusing ones like 0, O, I, l, 1)
 const REFERRAL_CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
@@ -21,6 +21,11 @@ export async function generateUniqueReferralCode(): Promise<string> {
     const code = generateReferralCode()
     
     // Check if code already exists
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+    
     const existingEntry = await prisma.waitlist.findUnique({
       where: { referralCode: code }
     })
@@ -55,6 +60,11 @@ export async function validateReferralCode(code: string): Promise<boolean> {
   }
   
   // Check if code exists in database
+  const prisma = await getPrismaClient()
+  if (!prisma) {
+    throw new Error('Database connection not available')
+  }
+  
   const entry = await prisma.waitlist.findUnique({
     where: { referralCode: code }
   })
@@ -63,6 +73,11 @@ export async function validateReferralCode(code: string): Promise<boolean> {
 }
 
 export async function getReferralStats(referralCode: string) {
+  const prisma = await getPrismaClient()
+  if (!prisma) {
+    throw new Error('Database connection not available')
+  }
+  
   const entry = await prisma.waitlist.findUnique({
     where: { referralCode },
     include: {
@@ -94,6 +109,11 @@ export async function getReferralStats(referralCode: string) {
 }
 
 export async function getTopReferrers(limit: number = 10) {
+  const prisma = await getPrismaClient()
+  if (!prisma) {
+    throw new Error('Database connection not available')
+  }
+  
   const topReferrers = await prisma.waitlist.findMany({
     include: {
       _count: {
@@ -115,7 +135,7 @@ export async function getTopReferrers(limit: number = 10) {
     }
   })
   
-  return topReferrers.map(entry => ({
+  return topReferrers.map((entry: { referralCode: string; _count: { referrals: number }; position: number; joinedAt: Date }) => ({
     referralCode: entry.referralCode,
     referralCount: entry._count.referrals,
     position: entry.position,

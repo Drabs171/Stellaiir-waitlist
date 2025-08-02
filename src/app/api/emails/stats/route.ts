@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       admin: { sent: 0, failed: 0 }
     }
 
-    stats.forEach(stat => {
+    stats.forEach((stat: { emailType: string; success: boolean; _count: { id: number } }) => {
       const type = stat.emailType as keyof typeof processedStats
       if (type in processedStats) {
         if (stat.success) {
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         activeSubscribers
       },
       byType: processedStats,
-      recentFailures: failedEmails.map(email => ({
+      recentFailures: failedEmails.map((email: { id: string; recipientEmail: string; emailType: string; sentAt: Date; errorMessage: string | null; waitlistEntry?: { position: number } | null }) => ({
         id: email.id,
         recipientEmail: email.recipientEmail,
         emailType: email.emailType,
