@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       admin: { sent: 0, failed: 0 }
     }
 
-    emailStats.forEach(stat => {
+    emailStats.forEach((stat: any) => {
       const type = stat.emailType as keyof typeof processedEmailStats
       if (type in processedEmailStats) {
         if (stat.success) {
