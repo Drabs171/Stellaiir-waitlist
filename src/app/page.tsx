@@ -162,7 +162,13 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 1.2 }}
           >
+            <div style={{ color: 'red', fontSize: '20px', padding: '20px', border: '2px solid red' }}>
+              DEBUG: About to render LiveCounter
+            </div>
             <LiveCounter />
+            <div style={{ color: 'green', fontSize: '20px', padding: '20px', border: '2px solid green' }}>
+              DEBUG: LiveCounter should be above this
+            </div>
           </motion.div>
 
           {/* Enhanced Waitlist Form */}
