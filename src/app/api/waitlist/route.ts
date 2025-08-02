@@ -39,6 +39,9 @@ async function verifyCaptcha(token: string): Promise<boolean> {
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Waitlist API: DATABASE_URL exists:', !!process.env.DATABASE_URL)
+    console.log('Waitlist API: DATABASE_URL preview:', process.env.DATABASE_URL?.substring(0, 20) + '...')
+    
     const ip = getClientIP(request)
     
     // Check rate limiting with enhanced fingerprinting

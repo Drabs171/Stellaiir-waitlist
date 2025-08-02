@@ -3,6 +3,9 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   try {
+    console.log('Count API: DATABASE_URL exists:', !!process.env.DATABASE_URL)
+    console.log('Count API: DATABASE_URL preview:', process.env.DATABASE_URL?.substring(0, 20) + '...')
+    
     const totalCount = await prisma.waitlist.count()
     
     // Get some additional stats
