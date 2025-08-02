@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Users, TrendingUp } from 'lucide-react'
 
@@ -20,6 +20,8 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
   const [data, setData] = useState<CounterData | null>(null)
   const [loading, setLoading] = useState(true)
   const [displayCount, setDisplayCount] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   // Fetch counter data
   const fetchData = async () => {
@@ -64,15 +66,36 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
     }
   }, [data])
 
-  // Fetch data on mount and set up polling
+  // Intersection Observer for visibility detection
   useEffect(() => {
+    if (!ref.current) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting)
+      },
+      { threshold: 0.1 }
+    )
+
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
+
+  // Fetch data only when visible
+  useEffect(() => {
+    if (!isVisible) return
+
     fetchData()
     
-    // Poll for updates every 30 seconds
-    const interval = setInterval(fetchData, 30000)
+    // Poll for updates every 30 seconds only when visible
+    const interval = setInterval(() => {
+      if (isVisible) {
+        fetchData()
+      }
+    }, 30000)
     
     return () => clearInterval(interval)
-  }, [])
+  }, [isVisible])
 
   if (loading) {
     return (
@@ -92,6 +115,7 @@ export default function LiveCounter({ className = '' }: LiveCounterProps) {
 
   return (
     <motion.div
+      ref={ref}
       className={`text-center ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

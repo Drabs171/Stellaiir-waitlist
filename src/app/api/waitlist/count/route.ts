@@ -1,10 +1,47 @@
 import { NextResponse } from 'next/server'
 import { getPrismaWaitlist } from '@/lib/prisma'
 
+// Simple in-memory cache
+interface CacheEntry {
+  data: any
+  timestamp: number
+}
+
+const cache = new Map<string, CacheEntry>()
+const CACHE_TTL = 30 * 1000 // 30 seconds
+
+function getCachedData(key: string) {
+  const entry = cache.get(key)
+  if (!entry) return null
+  
+  const now = Date.now()
+  if (now - entry.timestamp > CACHE_TTL) {
+    cache.delete(key)
+    return null
+  }
+  
+  return entry.data
+}
+
+function setCachedData(key: string, data: any) {
+  cache.set(key, {
+    data,
+    timestamp: Date.now()
+  })
+}
+
 export async function GET() {
   console.log('🚀 Count API function started')
   
   try {
+    // Check cache first
+    const cacheKey = 'waitlist_count'
+    const cachedData = getCachedData(cacheKey)
+    if (cachedData) {
+      console.log('⚡ Returning cached data')
+      return NextResponse.json({ data: cachedData })
+    }
+    
     console.log('📊 DATABASE_URL exists:', !!process.env.DATABASE_URL)
     console.log('📊 Getting Prisma waitlist client...')
     
@@ -24,44 +61,51 @@ export async function GET() {
       })
     }
 
-    console.log('✅ Prisma client ready - querying database...')
+    console.log('✅ Prisma client ready - querying database with single aggregation...')
     
-    const totalCount = await waitlist.count()
-    console.log('📊 Total count result:', totalCount)
-    
-    // Get some additional stats
+    // Get today's start timestamp
     const todayStart = new Date()
     todayStart.setHours(0, 0, 0, 0)
     
-    const todayCount = await waitlist.count({
-      where: {
-        joinedAt: {
-          gte: todayStart
+    // Single aggregation query to get all stats at once
+    const [totalStats, todayStats, referralStats] = await Promise.all([
+      // Total count
+      waitlist.count(),
+      // Today's signups
+      waitlist.count({
+        where: {
+          joinedAt: {
+            gte: todayStart
+          }
         }
-      }
-    })
-
-    // Get referral stats
-    const totalReferrals = await waitlist.count({
-      where: {
-        referredBy: {
-          not: null
+      }),
+      // Referral count
+      waitlist.count({
+        where: {
+          referredBy: {
+            not: null
+          }
         }
-      }
-    })
+      })
+    ])
 
+    console.log('📊 Query results - Total:', totalStats, 'Today:', todayStats, 'Referrals:', referralStats)
     console.log('✅ All database queries completed successfully')
 
-    return NextResponse.json({
-      data: {
-        total: totalCount,
-        today: todayCount,
-        referrals: totalReferrals,
-        referralRate: totalCount > 0 ? Math.round((totalReferrals / totalCount) * 100) : 0,
-        lastUpdated: new Date().toISOString(),
-        status: 'database_connected'
-      }
-    })
+    const responseData = {
+      total: totalStats,
+      today: todayStats,
+      referrals: referralStats,
+      referralRate: totalStats > 0 ? Math.round((referralStats / totalStats) * 100) : 0,
+      lastUpdated: new Date().toISOString(),
+      status: 'database_connected'
+    }
+
+    // Cache the response
+    setCachedData(cacheKey, responseData)
+    console.log('💾 Data cached for 30 seconds')
+
+    return NextResponse.json({ data: responseData })
   } catch (error) {
     console.error('❌ Waitlist count API error:', error)
     const err = error as Error

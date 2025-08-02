@@ -137,27 +137,35 @@ export async function POST(request: NextRequest) {
     // Generate unique referral code for new user
     const newReferralCode = await generateUniqueReferralCode()
 
-    // Get the next position number
-    const currentCount = await prisma.waitlist.count()
-    const nextPosition = currentCount + 1
+    // Use transaction to atomically get position and create entry
+    const entry = await prisma.$transaction(async (tx) => {
+      // Get the next position using aggregation (more efficient than count)
+      const maxPosition = await tx.waitlist.aggregate({
+        _max: {
+          position: true
+        }
+      })
+      
+      const nextPosition = (maxPosition._max.position || 0) + 1
 
-    // Create waitlist entry
-    const entry = await prisma.waitlist.create({
-      data: {
-        email,
-        referralCode: newReferralCode,
-        referredBy: referrerId,
-        position: nextPosition,
-        metadata: JSON.stringify(metadata)
-      },
-      include: {
-        referrer: {
-          select: {
-            referralCode: true,
-            email: true
+      // Create waitlist entry
+      return await tx.waitlist.create({
+        data: {
+          email,
+          referralCode: newReferralCode,
+          referredBy: referrerId,
+          position: nextPosition,
+          metadata: JSON.stringify(metadata)
+        },
+        include: {
+          referrer: {
+            select: {
+              referralCode: true,
+              email: true
+            }
           }
         }
-      }
+      })
     })
 
     console.log('✅ User added to waitlist:', entry.email, 'Position:', entry.position)
@@ -174,7 +182,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Check for milestones and admin notifications
-    checkNotifications(nextPosition).catch(error => {
+    checkNotifications(entry.position).catch(error => {
       console.error('Failed to check notifications:', error)
     })
 
