@@ -39,6 +39,9 @@ export default function EnhancedWaitlistForm({ className = '', onSuccess }: Enha
   const formRef = useRef<HTMLDivElement>(null)
   const captchaRef = useRef<HCaptcha>(null)
 
+  // Debug environment variable
+  console.log('hCaptcha site key:', process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY)
+
   const {
     register,
     handleSubmit,
@@ -392,18 +395,22 @@ export default function EnhancedWaitlistForm({ className = '', onSuccess }: Enha
                 >
                   <HCaptcha
                     ref={captchaRef}
-                    sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || ''}
+                    sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || '91324b5c-45c0-4d2a-a5fa-7eb8bf6a1340'}
                     onVerify={(token) => {
                       setCaptchaToken(token)
                       setErrorMessage('')
                     }}
-                    onError={() => {
+                    onError={(error) => {
+                      console.error('hCaptcha error:', error)
                       setCaptchaToken(null)
                       setErrorMessage('CAPTCHA verification failed. Please try again.')
                     }}
                     onExpire={() => {
                       setCaptchaToken(null)
                       setErrorMessage('CAPTCHA expired. Please verify again.')
+                    }}
+                    onLoad={() => {
+                      console.log('hCaptcha loaded successfully')
                     }}
                     theme="dark"
                     size="normal"
