@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { waitlistSchema } from '@/lib/validations'
 import { checkRateLimit, getClientIP } from '@/lib/rate-limit'
+import { getPrismaClient } from '@/lib/prisma'
+import { generateUniqueReferralCode, validateReferralCode } from '@/lib/referral'
+import { emailService, createReferralUrl } from '@/lib/email'
+import { emailTracker } from '@/lib/email-tracker'
 import { ZodError } from 'zod'
 
 // CAPTCHA verification function
@@ -34,7 +38,7 @@ async function verifyCaptcha(token: string): Promise<boolean> {
 }
 
 export async function POST(request: NextRequest) {
-  console.log('🚀 Waitlist API started - TEMPORARY NO DATABASE VERSION')
+  console.log('🚀 Waitlist API started - Full Database Version')
   
   try {
     const ip = getClientIP(request)
@@ -49,7 +53,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { captchaToken } = body
+    const { captchaToken, referralCode } = body
     
     console.log('📊 Verifying captcha...')
     
@@ -77,16 +81,109 @@ export async function POST(request: NextRequest) {
     
     console.log('✅ Email validated:', email)
 
-    // Return success response (temporary - not saving to database)
+    // Get database connection
+    const prisma = await getPrismaClient()
+    if (!prisma) {
+      throw new Error('Database connection not available')
+    }
+
+    // Collect metadata
+    const userAgent = request.headers.get('user-agent') || undefined
+    const referer = request.headers.get('referer') || undefined
+    const timestamp = new Date().toISOString()
+    
+    const metadata = {
+      userAgent,
+      referrer: referer,
+      timestamp,
+      source: 'api_form',
+      formMethod: 'POST'
+    }
+
+    // Check if email already exists
+    const existingEntry = await prisma.waitlist.findUnique({
+      where: { email }
+    })
+
+    if (existingEntry) {
+      return NextResponse.json(
+        { error: 'This email is already on the waitlist.' },
+        { status: 409 }
+      )
+    }
+
+    // Validate referral code if provided
+    let referrerId: string | null = null
+    if (referralCode) {
+      const isValidReferral = await validateReferralCode(referralCode)
+      if (!isValidReferral) {
+        return NextResponse.json(
+          { error: 'Invalid referral code.' },
+          { status: 400 }
+        )
+      }
+      
+      // Get referrer ID
+      const referrer = await prisma.waitlist.findUnique({
+        where: { referralCode },
+        select: { id: true }
+      })
+      
+      if (referrer) {
+        referrerId = referrer.id
+      }
+    }
+
+    // Generate unique referral code for new user
+    const newReferralCode = await generateUniqueReferralCode()
+
+    // Get the next position number
+    const currentCount = await prisma.waitlist.count()
+    const nextPosition = currentCount + 1
+
+    // Create waitlist entry
+    const entry = await prisma.waitlist.create({
+      data: {
+        email,
+        referralCode: newReferralCode,
+        referredBy: referrerId,
+        position: nextPosition,
+        metadata: JSON.stringify(metadata)
+      },
+      include: {
+        referrer: {
+          select: {
+            referralCode: true,
+            email: true
+          }
+        }
+      }
+    })
+
+    console.log('✅ User added to waitlist:', entry.email, 'Position:', entry.position)
+
+    // Send welcome email asynchronously
+    const referralUrl = createReferralUrl(entry.referralCode)
+    
+    sendWelcomeEmailAsync(entry, referralUrl).catch(error => {
+      console.error('Failed to send welcome email:', error)
+    })
+
+    // Check for milestones and admin notifications
+    checkNotifications(nextPosition).catch(error => {
+      console.error('Failed to check notifications:', error)
+    })
+
+    // Return success response
     const response = {
       success: true,
-      message: 'Successfully added to waitlist! (Database temporarily disabled)',
+      message: 'Successfully added to waitlist!',
       data: {
-        email: email,
-        position: 1, // Fake position
-        referralCode: 'TEMP123', // Fake referral code
-        referralUrl: `https://stellaiir.com?ref=TEMP123`,
-        joinedAt: new Date().toISOString()
+        email: entry.email,
+        position: entry.position,
+        referralCode: entry.referralCode,
+        referralUrl: referralUrl,
+        joinedAt: entry.joinedAt.toISOString()
       }
     }
 
@@ -109,9 +206,68 @@ export async function POST(request: NextRequest) {
     }
 
     const err = error as Error
+    if (err.message.includes('Unique constraint')) {
+      return NextResponse.json(
+        { error: 'This email is already on the waitlist.' },
+        { status: 409 }
+      )
+    }
+
     return NextResponse.json(
       { error: 'Something went wrong. Please try again.', details: err?.message },
       { status: 500 }
     )
+  }
+}
+
+// Helper functions
+async function sendWelcomeEmailAsync(entry: { id: string; email: string; position: number; referralCode: string; joinedAt: Date }, referralUrl: string) {
+  try {
+    console.log(`📧 Attempting to send welcome email to ${entry.email}`)
+    
+    await emailService.sendWelcomeEmail({
+      email: entry.email,
+      position: entry.position,
+      referralCode: entry.referralCode,
+      referralUrl: referralUrl,
+      joinedAt: entry.joinedAt.toISOString(),
+    })
+
+    await emailTracker.logEmail({
+      recipientEmail: entry.email,
+      emailType: 'welcome',
+      success: true,
+      waitlistId: entry.id
+    })
+
+    console.log(`✅ Welcome email sent to ${entry.email}`)
+  } catch (error) {
+    await emailTracker.logEmail({
+      recipientEmail: entry.email,
+      emailType: 'welcome',
+      success: false,
+      errorMessage: error instanceof Error ? error.message : 'Unknown error',
+      waitlistId: entry.id
+    })
+
+    console.error(`❌ Failed to send welcome email to ${entry.email}:`, error)
+  }
+}
+
+async function checkNotifications(currentPosition: number) {
+  try {
+    const milestone = await emailTracker.checkMilestone(currentPosition)
+    if (milestone) {
+      console.log(`🎯 Milestone reached: ${milestone}`)
+      // Milestone logic here
+    }
+
+    const adminThreshold = await emailTracker.checkAdminNotification(currentPosition)
+    if (adminThreshold) {
+      console.log(`📊 Admin threshold reached: ${adminThreshold}`)
+      // Admin notification logic here
+    }
+  } catch (error) {
+    console.error('Error checking notifications:', error)
   }
 }
