@@ -58,10 +58,12 @@ export const OptimizedParticleSystem = dynamic(
   () => import('../ParticleSystem').then(mod => {
     // Wrap component to reduce particles on mobile
     const Component = mod.default
-    return (props: any) => {
+    const OptimizedComponent = (props: Record<string, unknown>) => {
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
       return isMobile ? null : <Component {...props} />
     }
+    OptimizedComponent.displayName = 'OptimizedParticleSystem'
+    return OptimizedComponent
   }),
   {
     loading: () => null,
