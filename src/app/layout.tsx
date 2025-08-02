@@ -41,9 +41,13 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://stellaiir.com'),
   icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
     apple: '/logo.png',
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: '/logo.png',
+    },
   },
   alternates: {
     canonical: '/',
