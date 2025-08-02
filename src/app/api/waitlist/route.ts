@@ -165,8 +165,12 @@ export async function POST(request: NextRequest) {
     // Send welcome email asynchronously
     const referralUrl = createReferralUrl(entry.referralCode)
     
+    console.log('🚀 Starting async email send for:', entry.email)
+    console.log('🚀 Referral URL:', referralUrl)
+    console.log('🚀 Has RESEND_API_KEY:', !!process.env.RESEND_API_KEY)
+    
     sendWelcomeEmailAsync(entry, referralUrl).catch(error => {
-      console.error('Failed to send welcome email:', error)
+      console.error('❌ Failed to send welcome email:', error)
     })
 
     // Check for milestones and admin notifications
