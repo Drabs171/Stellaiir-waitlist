@@ -16,8 +16,8 @@ import NoScriptWaitlistForm from '@/components/NoScriptWaitlistForm'
 import { useEasterEggs } from '@/hooks/useKonamiCode'
 import { useAudioSystem } from '@/lib/audioSystem'
 
-// Fixed launch date outside component to prevent recalculation  
-const LAUNCH_DATE = new Date(2025, 11, 1, 18, 0, 0, 0) // December 1, 2025 at 6 PM local time (month is 0-indexed)
+// Calculate launch date once when module loads
+const LAUNCH_DATE = new Date(Date.now() + (90 * 24 * 60 * 60 * 1000))
 
 export default function Home() {
   const launchDate = LAUNCH_DATE
