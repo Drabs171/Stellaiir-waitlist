@@ -37,6 +37,13 @@ const CountdownTimer = ({
     if (!isClient) return
 
     const calculateTimeLeft = (): TimeLeft => {
+      // Validate target date
+      if (!targetDate || isNaN(targetDate.getTime())) {
+        console.error('❌ COUNTDOWN: Invalid target date provided')
+        setIsExpired(true)
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+      }
+
       const now = new Date().getTime()
       const target = targetDate.getTime()
       const difference = target - now
@@ -55,6 +62,7 @@ const CountdownTimer = ({
       }
 
       console.log('✅ COUNTDOWN: Target is in future, calculating time left')
+      setIsExpired(false)
 
       return {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
