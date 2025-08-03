@@ -16,9 +16,11 @@ import NoScriptWaitlistForm from '@/components/NoScriptWaitlistForm'
 import { useEasterEggs } from '@/hooks/useKonamiCode'
 import { useAudioSystem } from '@/lib/audioSystem'
 
+// Fixed launch date outside component to prevent recalculation
+const LAUNCH_DATE = new Date('2025-01-15T18:00:00.000Z') // January 15, 2025 at 6 PM UTC
+
 export default function Home() {
-  // Set fixed launch date - May 15, 2025 at 12:00 PM EST
-  const launchDate = new Date('2025-05-15T12:00:00-05:00')
+  const launchDate = LAUNCH_DATE
   
   // Easter eggs system
   const { activeEggs } = useEasterEggs()
