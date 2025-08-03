@@ -17,9 +17,8 @@ import { useEasterEggs } from '@/hooks/useKonamiCode'
 import { useAudioSystem } from '@/lib/audioSystem'
 
 export default function Home() {
-  // Set launch date (example: 3 months from now)
-  const launchDate = new Date()
-  launchDate.setMonth(launchDate.getMonth() + 3)
+  // Set fixed launch date - May 15, 2025 at 12:00 PM EST
+  const launchDate = new Date('2025-05-15T12:00:00-05:00')
   
   // Easter eggs system
   const { activeEggs } = useEasterEggs()
