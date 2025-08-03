@@ -41,10 +41,20 @@ const CountdownTimer = ({
       const target = targetDate.getTime()
       const difference = target - now
 
+      // Debug logging
+      console.log('🚀 COUNTDOWN DEBUG:')
+      console.log('Current time:', new Date().toISOString())
+      console.log('Target time:', targetDate.toISOString())
+      console.log('Difference (ms):', difference)
+      console.log('Difference (days):', difference / (1000 * 60 * 60 * 24))
+
       if (difference <= 0) {
+        console.log('❌ COUNTDOWN: Target date has passed, showing expired state')
         setIsExpired(true)
         return { days: 0, hours: 0, minutes: 0, seconds: 0 }
       }
+
+      console.log('✅ COUNTDOWN: Target is in future, calculating time left')
 
       return {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),

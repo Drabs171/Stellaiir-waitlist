@@ -17,7 +17,7 @@ import { useEasterEggs } from '@/hooks/useKonamiCode'
 import { useAudioSystem } from '@/lib/audioSystem'
 
 // Fixed launch date outside component to prevent recalculation  
-const LAUNCH_DATE = new Date('2025-02-01T18:00:00.000Z') // February 1, 2025 at 6 PM UTC
+const LAUNCH_DATE = new Date('2025-06-01T18:00:00.000Z') // June 1, 2025 at 6 PM UTC (far future for testing)
 
 export default function Home() {
   const launchDate = LAUNCH_DATE
